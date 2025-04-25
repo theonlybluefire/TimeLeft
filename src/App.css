@@ -4,6 +4,12 @@
   padding: 2rem;
   text-align: center;
 }
+html {
+  background-image:url(./mountain1.jpg ); 
+  background-size: 100% 100% ;
+  background-size: cover;
+  background-blend-mode:soft-light;
+}
 
 .logo {
   height: 6em;
