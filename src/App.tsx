@@ -1,14 +1,16 @@
-import {useEffect, useState } from 'react'
+import {useEffect, useRef, useState } from 'react'
 import './App.css'
 
 function App() {
   const [timer, setTimer] = useState<string>();
-  const [goal, setGoal] = useState<string>("24:00");
+  const goal = useRef<string>("24:00");
+
 
   useEffect(() => {
     var local:String = String(localStorage.getItem('goal'));
     if(local != null && local != undefined) {
-      setGoal(String(local));
+      goal.current = String(local);
+
     }
   },[])
 
@@ -19,7 +21,7 @@ function App() {
   function calculate() {
     const now:Date = new Date();
     const goalTime:Date = new Date(now);
-    const [hours, minutes] = goal.split(":");
+    const [hours, minutes] = goal.current.split(":");
 
     goalTime.setHours(Number(hours), Number(minutes), 0, 0);
     if (goalTime <= now) {
@@ -35,8 +37,8 @@ function App() {
   }
 
   function inputChange(e:React.ChangeEvent<HTMLInputElement>) {
-    setGoal(e.target.value);
-    localStorage.setItem('goal',goal);
+    goal.current = e.target.value;
+    localStorage.setItem('goal',goal.current);
     console
     calculate();
   }
@@ -46,7 +48,7 @@ function App() {
       <div style={{alignContent:'center'}}>
         <h1  style={{fontSize:'100px'}} >{timer}</h1>
         <p className='spectral-regular'>Time left till</p>
-        <input type="time" value={goal} onChange={inputChange} />
+        <input type="time" value={goal.current} onChange={inputChange} />
       </div>
     </>
   )
